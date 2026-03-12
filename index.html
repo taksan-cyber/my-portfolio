@@ -306,6 +306,49 @@
             }
         }
 
+        /* Retention Features */
+        .install-banner {
+            display: none;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 1rem;
+            margin-bottom: 2rem;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--card-shadow);
+        }
+
+        .daily-tool-card {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));
+            border: 2px solid var(--accent-primary);
+            padding: 1.5rem;
+            border-radius: 1.5rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .daily-tool-card:hover {
+            transform: scale(1.02);
+        }
+
+        .usage-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--container-bg);
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--accent-primary);
+            border: 1px solid var(--glass-border);
+        }
+
         /* Tool Components */
         .input-group {
             margin-bottom: 1.5rem;
@@ -416,12 +459,19 @@
 </head>
 <body data-theme="dark">
     <header>
-        <div class="logo">ToolBox</div>
+        <div class="logo">ToolBox <span id="user-usage-badge" class="usage-badge" style="display: none;">0 Tools Used</span></div>
         <button class="theme-toggle" id="theme-toggle">Light Mode</button>
     </header>
 
     <main>
         <div id="dashboard-view">
+            <div id="install-banner" class="install-banner">
+                <span>Add ToolBox to your home screen for instant access!</span>
+                <button class="action-btn" onclick="installPWA()" style="background: white; color: var(--accent-primary);">Install Now</button>
+            </div>
+
+            <div id="daily-tool-container"></div>
+
             <section class="hero animate-fade-in">
                 <h1>Everything you need, <br>in one place.</h1>
                 <p>Fast, secure, and beautiful utilities for your daily digital tasks.</p>
@@ -532,6 +582,8 @@
                 <div style="display: flex; justify-content: center; gap: 1.5rem; align-items: center;">
                     <a href="https://github.com/your-username/toolbox" target="_blank" style="color: var(--text-secondary); text-decoration: none; font-size: 0.875rem;">GitHub リポジトリ</a>
                     <span style="color: var(--glass-border);">|</span>
+                    <a href="mailto:feedback@toolbox.site?subject=ToolBox%20Feedback" style="color: var(--text-secondary); text-decoration: none; font-size: 0.875rem;">フィードバック送信</a>
+                    <span style="color: var(--glass-border);">|</span>
                     <a href="https://antigravity.google" target="_blank" style="color: var(--accent-primary); text-decoration: none; font-size: 0.875rem; font-weight: 500;">Powered by Antigravity</a>
                 </div>
             </footer>
@@ -627,12 +679,75 @@
         });
 
         // PWA / Service Worker (Basic)
+        let deferredPrompt;
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('./sw.js')
                     .then(reg => console.log('SW Registered'))
                     .catch(err => console.log('SW Registration Failed', err));
             });
+        }
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('install-banner').style.display = 'flex';
+        });
+
+        async function installPWA() {
+            if (!deferredPrompt) return;
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            if (outcome === 'accepted') {
+                document.getElementById('install-banner').style.display = 'none';
+            }
+            deferredPrompt = null;
+        }
+
+        // Usage Stats
+        function updateUsageStats() {
+            let usedTools = JSON.parse(localStorage.getItem('toolbox_used_tools') || '[]');
+            const count = usedTools.length;
+            const badge = document.getElementById('user-usage-badge');
+            if (count > 0) {
+                badge.textContent = `${count} Tools Used`;
+                badge.style.display = 'inline-flex';
+            }
+        }
+
+        function recordToolUsage(toolId) {
+            let usedTools = JSON.parse(localStorage.getItem('toolbox_used_tools') || '[]');
+            if (!usedTools.includes(toolId)) {
+                usedTools.push(toolId);
+                localStorage.setItem('toolbox_used_tools', JSON.stringify(usedTools));
+                updateUsageStats();
+            }
+        }
+
+        // Tool of the Day
+        function initDailyTool() {
+            const today = new Date().toDateString();
+            let daily = JSON.parse(localStorage.getItem('toolbox_daily') || '{}');
+            
+            const toolIds = Object.keys(tools);
+            if (daily.date !== today) {
+                const randomId = toolIds[Math.floor(Math.random() * toolIds.length)];
+                daily = { date: today, id: randomId };
+                localStorage.setItem('toolbox_daily', JSON.stringify(daily));
+            }
+
+            const tool = tools[daily.id];
+            const container = document.getElementById('daily-tool-container');
+            container.innerHTML = `
+                <div class="daily-tool-card animate-fade-in" onclick="openTool('${daily.id}')">
+                    <div style="flex: 1;">
+                        <span style="text-transform: uppercase; font-size: 0.75rem; font-weight: 700; color: var(--accent-primary); letter-spacing: 0.1em;">Tool of the Day</span>
+                        <h2 style="margin: 0.25rem 0;">Try the ${tool.title}!</h2>
+                        <p style="margin: 0; font-size: 0.9rem; color: var(--text-secondary);">${tool.title} helps you work faster and smarter.</p>
+                    </div>
+                    <div class="action-btn" style="padding: 0.5rem 1rem;">Open Now →</div>
+                </div>
+            `;
         }
 
         // SNS Sharing Logic
@@ -1365,6 +1480,7 @@
             
             if (tool.init) tool.init();
             addToHistory(toolId);
+            recordToolUsage(toolId);
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
@@ -1377,6 +1493,8 @@
         window.onload = () => {
             applyFavorites();
             renderHistory();
+            initDailyTool();
+            updateUsageStats();
         };
     </script>
 </body>
