@@ -10,6 +10,9 @@
     <meta name="keywords" content="オンラインツール, 便利ツール, テキスト変換, パスワード生成, 計算機, タイマー, QRコード, 単位換算, JSON整形, Base64, MDプレビュー, 無料ツール">
     <link rel="canonical" href="https://taksan-cyber.github.io/my-portfolio/">
     <meta name="robots" content="index, follow">
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#6366f1">
+
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
@@ -19,31 +22,20 @@
     <meta property="og:image" content="https://taksan-cyber.github.io/my-portfolio/og-image.png">
 
     <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
+    <meta name="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://taksan-cyber.github.io/my-portfolio/">
-    <meta property="twitter:title" content="ToolBox | 究極のオンライン便利ツール集">
+    <meta name="twitter:title" content="ToolBox - 究極のオンライン便利ツール集">
     <meta property="twitter:description" content="13種以上の便利なツールを一つに。高速、安全、 그리고 美しい。すべての処理はブラウザ上で行われるため、プライバシーも万全です。">
-    <meta property="twitter:image" content="https://your-toolbox-url.com/og-image.png">
+    <meta name="twitter:image" content="https://taksan-cyber.github.io/my-portfolio/og-image.png">
 
     <!-- JSON-LD Structured Data -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "SoftwareApplication",
+      "@type": "WebApplication",
       "name": "ToolBox",
-      "operatingSystem": "All",
-      "applicationCategory": "UtilitiesApplication",
-      "description": "A collection of essential web tools including text conversion, password generation, calculator, and more.",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD"
-      },
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "5",
-        "ratingCount": "100"
-      }
+      "description": "究極のオンライン便利ツール集",
+      "url": "https://taksan-cyber.github.io/my-portfolio/"
     }
     </script>
 
@@ -112,7 +104,22 @@
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
+
+        .offline-indicator {
+            display: none;
+            font-size: 0.75rem;
+            padding: 0.2rem 0.5rem;
+            background: #10b981;
+            color: white;
+            border-radius: 1rem;
+            font-weight: 600;
+            -webkit-text-fill-color: white; /* Fix gradient transparency */
+        }
+
 
         .theme-toggle {
             background: var(--container-bg);
@@ -417,7 +424,110 @@
             gap: 1.5rem;
         }
 
+        /* Controls Bar (Search & Filter) */
+        .controls-bar {
+            margin-bottom: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .search-container {
+            width: 100%;
+            max-width: 600px;
+            position: relative;
+        }
+
+        .search-container input {
+            padding-left: 3rem;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1.25rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            pointer-events: none;
+        }
+
+        .category-filters {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .filter-chip {
+            padding: 0.5rem 1.25rem;
+            border-radius: 2rem;
+            background: var(--container-bg);
+            border: 1px solid var(--glass-border);
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            backdrop-filter: blur(var(--glass-blur));
+        }
+
+        .filter-chip:hover {
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+        }
+
+        .filter-chip.active {
+            background: var(--accent-primary);
+            color: white;
+            border-color: var(--accent-primary);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        /* Modal Styling */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(8px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: var(--container-bg);
+            border: 1px solid var(--glass-border);
+            padding: 2.5rem;
+            border-radius: 2rem;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: var(--card-shadow);
+            position: relative;
+            animation: modalFadeIn 0.3s ease-out;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+        }
+
         /* Animations */
+
+
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
@@ -455,13 +565,58 @@
             overflow-x: auto;
             margin-bottom: 1rem;
         }
+
+        /* Strength Meter */
+        .strength-meter {
+            height: 6px;
+            width: 100%;
+            background: var(--glass-border);
+            border-radius: 3px;
+            margin-top: 1rem;
+            overflow: hidden;
+        }
+        .strength-bar {
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s, background-color 0.3s;
+        }
+        .strength-text {
+            font-size: 0.75rem;
+            margin-top: 0.5rem;
+            font-weight: 500;
+        }
+
+        /* JSON Tree View */
+        .json-tree {
+            font-family: monospace;
+            font-size: 0.9rem;
+            background: rgba(0,0,0,0.05);
+            padding: 1rem;
+            border-radius: 1rem;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .json-key { color: var(--accent-primary); font-weight: 600; }
+        .json-string { color: #10b981; }
+        .json-number { color: #f59e0b; }
+        .json-boolean { color: #8b5cf6; }
+        .json-null { color: #ec4899; }
+        .json-toggle { cursor: pointer; user-select: none; margin-right: 0.5rem; }
+        .json-nested { padding-left: 1.5rem; border-left: 1px dashed var(--glass-border); }
     </style>
+
 </head>
 <body data-theme="dark">
     <header>
-        <div class="logo">ToolBox <span id="user-usage-badge" class="usage-badge" style="display: none;">0 Tools Used</span></div>
-        <button class="theme-toggle" id="theme-toggle">Light Mode</button>
+        <div class="logo">
+            ToolBox 
+            <span id="offline-indicator" class="offline-indicator">Offline Ready</span>
+            <span id="user-usage-badge" class="usage-badge" style="display: none;">0 Tools Used</span>
+        </div>
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle Light/Dark Mode">Light Mode</button>
+
     </header>
+
 
     <main>
         <div id="dashboard-view">
@@ -477,87 +632,106 @@
                 <p>Fast, secure, and beautiful utilities for your daily digital tasks.</p>
             </section>
 
+            <div class="controls-bar animate-fade-in" style="animation-delay: 0.1s">
+                <div class="search-container">
+                    <span class="search-icon" aria-hidden="true">🔍</span>
+                    <input type="text" id="tool-search" placeholder="Search tools (e.g. JSON, Password, Text)..." oninput="filterTools()" aria-label="Search tools">
+                </div>
+
+                <div class="category-filters" id="category-filters" role="tablist" aria-label="Tool Categories">
+                    <div class="filter-chip active" onclick="setCategory('all')" tabindex="0" role="tab" aria-selected="true" aria-label="All Tools">All Tools</div>
+                    <div class="filter-chip" onclick="setCategory('text')" tabindex="0" role="tab" aria-selected="false" aria-label="Text tools">Text</div>
+                    <div class="filter-chip" onclick="setCategory('dev')" tabindex="0" role="tab" aria-selected="false" aria-label="Developer tools">Developer</div>
+                    <div class="filter-chip" onclick="setCategory('math')" tabindex="0" role="tab" aria-selected="false" aria-label="Math and Statistics tools">Math & Stats</div>
+                    <div class="filter-chip" onclick="setCategory('design')" tabindex="0" role="tab" aria-selected="false" aria-label="Design tools">Design</div>
+                </div>
+
+            </div>
+
             <div class="dashboard-grid" id="tools-grid">
-                <div class="tool-card animate-fade-in" style="animation-delay: 0.1s" onclick="openTool('text')" data-tool="text">
-                    <span class="fav-star" onclick="toggleFavorite(event, 'text')">★</span>
-                    <div class="tool-icon">T</div>
+
+                <div class="tool-card animate-fade-in" style="animation-delay: 0.1s" onclick="openTool('text')" data-tool="text" data-category="text" tabindex="0" role="button" aria-label="Open Text Transformation tool">
+                    <span class="fav-star" onclick="toggleFavorite(event, 'text')" aria-label="Toggle Favorite">★</span>
+                    <div class="tool-icon" aria-hidden="true">T</div>
                     <h3>Text Transformation</h3>
                     <p>Convert case, remove spaces, and clean up your text instantly.</p>
                 </div>
-                <div class="tool-card animate-fade-in" style="animation-delay: 0.2s" onclick="openTool('password')" data-tool="password">
-                    <span class="fav-star" onclick="toggleFavorite(event, 'password')">★</span>
-                    <div class="tool-icon">🔑</div>
+                <div class="tool-card animate-fade-in" style="animation-delay: 0.2s" onclick="openTool('password')" data-tool="password" data-category="dev" tabindex="0" role="button" aria-label="Open Password Generator tool">
+                    <span class="fav-star" onclick="toggleFavorite(event, 'password')" aria-label="Toggle Favorite">★</span>
+                    <div class="tool-icon" aria-hidden="true">🔑</div>
                     <h3>Password Generator</h3>
                     <p>Create secure, random passwords with custom requirements.</p>
                 </div>
-                <div class="tool-card animate-fade-in" style="animation-delay: 0.3s" onclick="openTool('calculator')" data-tool="calculator">
-                    <span class="fav-star" onclick="toggleFavorite(event, 'calculator')">★</span>
-                    <div class="tool-icon">±</div>
+                <div class="tool-card animate-fade-in" style="animation-delay: 0.3s" onclick="openTool('calculator')" data-tool="calculator" data-category="math" tabindex="0" role="button" aria-label="Open Calculator tool">
+                    <span class="fav-star" onclick="toggleFavorite(event, 'calculator')" aria-label="Toggle Favorite">★</span>
+                    <div class="tool-icon" aria-hidden="true">±</div>
                     <h3>Calculator</h3>
                     <p>A clean and responsive interface for basic arithmetic operations.</p>
                 </div>
-                <div class="tool-card animate-fade-in" style="animation-delay: 0.4s" onclick="openTool('timer')" data-tool="timer">
-                    <span class="fav-star" onclick="toggleFavorite(event, 'timer')">★</span>
-                    <div class="tool-icon">⏱</div>
+                <div class="tool-card animate-fade-in" style="animation-delay: 0.4s" onclick="openTool('timer')" data-tool="timer" data-category="math" tabindex="0" role="button" aria-label="Open Timer tool">
+                    <span class="fav-star" onclick="toggleFavorite(event, 'timer')" aria-label="Toggle Favorite">★</span>
+                    <div class="tool-icon" aria-hidden="true">⏱</div>
                     <h3>Timer</h3>
                     <p>Stay focused with a simple countdown and visual progress.</p>
                 </div>
-                <div class="tool-card animate-fade-in" style="animation-delay: 0.5s" onclick="openTool('qrcode')" data-tool="qrcode">
-                    <span class="fav-star" onclick="toggleFavorite(event, 'qrcode')">★</span>
-                    <div class="tool-icon">QR</div>
+                <div class="tool-card animate-fade-in" style="animation-delay: 0.5s" onclick="openTool('qrcode')" data-tool="qrcode" data-category="design" tabindex="0" role="button" aria-label="Open QR Generator tool">
+                    <span class="fav-star" onclick="toggleFavorite(event, 'qrcode')" aria-label="Toggle Favorite">★</span>
+                    <div class="tool-icon" aria-hidden="true">QR</div>
                     <h3>QR Generator</h3>
                     <p>Instantly turn any text or URL into a high-quality QR code.</p>
                 </div>
                 <!-- Phase 2 Tools -->
-                <div class="tool-card animate-fade-in" style="animation-delay: 0.6s" onclick="openTool('unit')" data-tool="unit">
-                    <span class="fav-star" onclick="toggleFavorite(event, 'unit')">★</span>
-                    <div class="tool-icon">⇄</div>
+                <div class="tool-card animate-fade-in" style="animation-delay: 0.6s" onclick="openTool('unit')" data-tool="unit" data-category="math" tabindex="0" role="button" aria-label="Open Unit Converter tool">
+                    <span class="fav-star" onclick="toggleFavorite(event, 'unit')" aria-label="Toggle Favorite">★</span>
+                    <div class="tool-icon" aria-hidden="true">⇄</div>
                     <h3>Unit Converter</h3>
                     <p>Quickly convert between different units of length, weight, and temperature.</p>
                 </div>
-                <div class="tool-card animate-fade-in" style="animation-delay: 0.7s" onclick="openTool('color')" data-tool="color">
-                    <span class="fav-star" onclick="toggleFavorite(event, 'color')">★</span>
-                    <div class="tool-icon">🎨</div>
+                <div class="tool-card animate-fade-in" style="animation-delay: 0.7s" onclick="openTool('color')" data-tool="color" data-category="design" tabindex="0" role="button" aria-label="Open Color Converter tool">
+                    <span class="fav-star" onclick="toggleFavorite(event, 'color')" aria-label="Toggle Favorite">★</span>
+                    <div class="tool-icon" aria-hidden="true">🎨</div>
                     <h3>Color Converter</h3>
                     <p>Seamlessly convert between HEX, RGB, and HSL color formats.</p>
                 </div>
-                <div class="tool-card animate-fade-in" style="animation-delay: 0.8s" onclick="openTool('json')" data-tool="json">
-                    <span class="fav-star" onclick="toggleFavorite(event, 'json')">★</span>
-                    <div class="tool-icon">{ }</div>
+                <div class="tool-card animate-fade-in" style="animation-delay: 0.8s" onclick="openTool('json')" data-tool="json" data-category="dev" tabindex="0" role="button" aria-label="Open JSON Formatter tool">
+                    <span class="fav-star" onclick="toggleFavorite(event, 'json')" aria-label="Toggle Favorite">★</span>
+                    <div class="tool-icon" aria-hidden="true">{ }</div>
                     <h3>JSON Formatter</h3>
                     <p>Format, minify, and validate your JSON data for better readability.</p>
                 </div>
-                <div class="tool-card animate-fade-in" style="animation-delay: 0.9s" onclick="openTool('stats')" data-tool="stats">
-                    <span class="fav-star" onclick="toggleFavorite(event, 'stats')">★</span>
-                    <div class="tool-icon">📊</div>
+                <div class="tool-card animate-fade-in" style="animation-delay: 0.9s" onclick="openTool('stats')" data-tool="stats" data-category="text" tabindex="0" role="button" aria-label="Open Advanced Stats tool">
+                    <span class="fav-star" onclick="toggleFavorite(event, 'stats')" aria-label="Toggle Favorite">★</span>
+                    <div class="tool-icon" aria-hidden="true">📊</div>
                     <h3>Advanced Stats</h3>
                     <p>Get detailed statistics about your text, including readability and time.</p>
                 </div>
                 <!-- Phase 3 Tools -->
-                <div class="tool-card animate-fade-in" style="animation-delay: 1.0s" onclick="openTool('base64')" data-tool="base64">
-                    <span class="fav-star" onclick="toggleFavorite(event, 'base64')">★</span>
-                    <div class="tool-icon">64</div>
+                <div class="tool-card animate-fade-in" style="animation-delay: 1.0s" onclick="openTool('base64')" data-tool="base64" data-category="dev" tabindex="0" role="button" aria-label="Open Base64 Converter tool">
+                    <span class="fav-star" onclick="toggleFavorite(event, 'base64')" aria-label="Toggle Favorite">★</span>
+                    <div class="tool-icon" aria-hidden="true">64</div>
                     <h3>Base64 Converter</h3>
                     <p>Encode and decode text to and from Base64 format securely.</p>
                 </div>
-                <div class="tool-card animate-fade-in" style="animation-delay: 1.1s" onclick="openTool('url')" data-tool="url">
-                    <span class="fav-star" onclick="toggleFavorite(event, 'url')">★</span>
-                    <div class="tool-icon">🔗</div>
+                <div class="tool-card animate-fade-in" style="animation-delay: 1.1s" onclick="openTool('url')" data-tool="url" data-category="dev" tabindex="0" role="button" aria-label="Open URL Encoder tool">
+                    <span class="fav-star" onclick="toggleFavorite(event, 'url')" aria-label="Toggle Favorite">★</span>
+                    <div class="tool-icon" aria-hidden="true">🔗</div>
                     <h3>URL Encoder</h3>
                     <p>Safely encode and decode URLs for web use and sharing.</p>
                 </div>
-                <div class="tool-card animate-fade-in" style="animation-delay: 1.2s" onclick="openTool('markdown')" data-tool="markdown">
-                    <span class="fav-star" onclick="toggleFavorite(event, 'markdown')">★</span>
-                    <div class="tool-icon">M⬇</div>
+                <div class="tool-card animate-fade-in" style="animation-delay: 1.2s" onclick="openTool('markdown')" data-tool="markdown" data-category="text" tabindex="0" role="button" aria-label="Open Markdown Previewer tool">
+                    <span class="fav-star" onclick="toggleFavorite(event, 'markdown')" aria-label="Toggle Favorite">★</span>
+                    <div class="tool-icon" aria-hidden="true">M⬇</div>
                     <h3>MD Previewer</h3>
                     <p>Write Markdown and see it rendered as beautiful HTML instantly.</p>
                 </div>
-                <div class="tool-card animate-fade-in" style="animation-delay: 1.3s" onclick="openTool('notes')" data-tool="notes">
-                    <span class="fav-star" onclick="toggleFavorite(event, 'notes')">★</span>
-                    <div class="tool-icon">📝</div>
+                <div class="tool-card animate-fade-in" style="animation-delay: 1.3s" onclick="openTool('notes')" data-tool="notes" data-category="text" tabindex="0" role="button" aria-label="Open Quick Notes tool">
+                    <span class="fav-star" onclick="toggleFavorite(event, 'notes')" aria-label="Toggle Favorite">★</span>
+                    <div class="tool-icon" aria-hidden="true">📝</div>
                     <h3>Quick Notes</h3>
                     <p>Save temporary notes directly in your browser's local storage.</p>
                 </div>
+
+
             </div>
 
             <section class="history-panel animate-fade-in">
@@ -580,22 +754,43 @@
             <footer style="margin-top: 5rem; text-align: center; padding-bottom: 2rem; border-top: 1px solid var(--glass-border); padding-top: 2rem;">
                 <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 1rem;">© 2026 ToolBox | All tools run locally in your browser.</p>
                 <div style="display: flex; justify-content: center; gap: 1.5rem; align-items: center;">
-                    <a href="https://github.com/your-username/toolbox" target="_blank" style="color: var(--text-secondary); text-decoration: none; font-size: 0.875rem;">GitHub リポジトリ</a>
+                    <a href="https://github.com/taksan-cyber/my-portfolio" target="_blank" style="color: var(--text-secondary); text-decoration: none; font-size: 0.875rem;" aria-label="GitHub Repository">GitHub リポジトリ</a>
                     <span style="color: var(--glass-border);">|</span>
-                    <a href="mailto:feedback@toolbox.site?subject=ToolBox%20Feedback" style="color: var(--text-secondary); text-decoration: none; font-size: 0.875rem;">フィードバック送信</a>
+
+                    <a href="javascript:void(0)" onclick="openFeedback()" style="color: var(--text-secondary); text-decoration: none; font-size: 0.875rem;" aria-label="Send Feedback">フィードバック送信</a>
                     <span style="color: var(--glass-border);">|</span>
-                    <a href="https://antigravity.google" target="_blank" style="color: var(--accent-primary); text-decoration: none; font-size: 0.875rem; font-weight: 500;">Powered by Antigravity</a>
+                    <a href="https://antigravity.google" target="_blank" style="color: var(--accent-primary); text-decoration: none; font-size: 0.875rem; font-weight: 500;" aria-label="Powered by Antigravity">Powered by Antigravity</a>
                 </div>
             </footer>
         </div>
 
         <div id="tool-viewport">
-            <div class="back-btn" onclick="closeTool()">← Back to Dashboard</div>
+            <div class="back-btn" onclick="closeTool()" aria-label="Back to Dashboard">← Back to Dashboard</div>
             <div id="tool-content">
                 <!-- Tool specific content will be injected here -->
             </div>
         </div>
     </main>
+
+    <!-- Feedback Modal -->
+    <div id="feedback-modal" class="modal-overlay" onclick="closeFeedback(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <span class="close-modal" onclick="closeFeedback()">&times;</span>
+            <h2 style="margin-bottom: 1.5rem;">Send Feedback</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 2rem; font-size: 0.95rem;">
+                Help us improve ToolBox! Report a bug or suggest a new feature.
+            </p>
+                <div class="btn-grid" style="grid-template-columns: 1fr;">
+                    <a href="https://github.com/taksan-cyber/my-portfolio/issues/new" target="_blank" class="action-btn" style="text-decoration: none; text-align: center;">Open GitHub Issue</a>
+                    <a href="https://docs.google.com/forms/your-google-form-link" target="_blank" class="action-btn secondary" style="text-decoration: none; text-align: center;">Fill out Google Form</a>
+                </div>
+
+            <p style="text-align: center; margin-top: 1.5rem; font-size: 0.8rem; color: var(--text-secondary);">
+                Thank you for your support!
+            </p>
+        </div>
+    </div>
+
 
     <script>
         const themeToggle = document.getElementById('theme-toggle');
@@ -676,17 +871,35 @@
         // Keyboard Shortcuts
         window.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') closeTool();
+            if (e.key === 'Enter') {
+                if (e.target.classList.contains('tool-card')) {
+                    const toolId = e.target.getAttribute('data-tool');
+                    openTool(toolId);
+                } else if (e.target.classList.contains('filter-chip')) {
+                    const cat = e.target.textContent.toLowerCase().includes('all') ? 'all' : 
+                                e.target.textContent.toLowerCase().includes('text') ? 'text' :
+                                e.target.textContent.toLowerCase().includes('dev') ? 'dev' :
+                                e.target.textContent.toLowerCase().includes('math') ? 'math' : 'design';
+                    setCategory(cat);
+                }
+            }
         });
+
+
 
         // PWA / Service Worker (Basic)
         let deferredPrompt;
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('./sw.js')
-                    .then(reg => console.log('SW Registered'))
+                    .then(reg => {
+                        console.log('SW Registered');
+                        document.getElementById('offline-indicator').style.display = 'inline-block';
+                    })
                     .catch(err => console.log('SW Registration Failed', err));
             });
         }
+
 
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
@@ -705,7 +918,42 @@
         }
 
         // Usage Stats
+        // Filtering and Search Logic
+        let currentCategory = 'all';
+
+        function setCategory(cat) {
+            currentCategory = cat;
+            document.querySelectorAll('.filter-chip').forEach(chip => {
+                const isActive = chip.textContent.toLowerCase().includes(cat) || (cat === 'all' && chip.textContent.includes('All'));
+                chip.classList.toggle('active', isActive);
+                chip.setAttribute('aria-selected', isActive);
+            });
+            filterTools();
+        }
+
+
+        function filterTools() {
+            const query = document.getElementById('tool-search').value.toLowerCase();
+            const cards = document.querySelectorAll('.tool-card');
+            
+            cards.forEach(card => {
+                const title = card.querySelector('h3').textContent.toLowerCase();
+                const desc = card.querySelector('p').textContent.toLowerCase();
+                const category = card.getAttribute('data-category');
+                
+                const matchesSearch = title.includes(query) || desc.includes(query);
+                const matchesCategory = currentCategory === 'all' || category === currentCategory;
+                
+                if (matchesSearch && matchesCategory) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
         function updateUsageStats() {
+
             let usedTools = JSON.parse(localStorage.getItem('toolbox_used_tools') || '[]');
             const count = usedTools.length;
             const badge = document.getElementById('user-usage-badge');
@@ -829,7 +1077,12 @@
                         <div class="input-group" style="margin-top: 2rem;">
                             <label>Generated Password</label>
                             <input type="text" id="pass-output" readonly placeholder="Click Generate">
+                            <div class="strength-meter">
+                                <div id="strength-bar" class="strength-bar"></div>
+                            </div>
+                            <div id="strength-text" class="strength-text">Strength: -</div>
                         </div>
+
                         <div class="btn-grid">
                             <button class="action-btn" onclick="generatePassword()">Generate Password</button>
                             <button class="action-btn secondary" onclick="copyText('pass-output')">Copy to Clipboard</button>
@@ -1006,11 +1259,17 @@
                             <textarea id="json-input" rows="12" placeholder='{"key": "value"}' oninput="validateJson()"></textarea>
                         </div>
                         <div id="json-status" style="margin-bottom: 1rem; font-size: 0.875rem;"></div>
+                        <div id="json-tree-container" style="display: none; margin-bottom: 1.5rem;">
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 500; color: var(--text-secondary);">Tree View</label>
+                            <div id="json-tree" class="json-tree"></div>
+                        </div>
                         <div class="btn-grid">
                             <button class="action-btn" onclick="formatJson('pretty')">Beautify</button>
                             <button class="action-btn" onclick="formatJson('minify')">Minify</button>
+                            <button class="action-btn secondary" onclick="toggleJsonView()" id="json-view-toggle">Show Tree View</button>
                             <button class="action-btn secondary" onclick="copyText('json-input')">Copy JSON</button>
                         </div>
+
                     </div>
                 `,
                 init: () => {}
@@ -1290,12 +1549,65 @@
                 const obj = JSON.parse(input.value);
                 input.value = type === 'pretty' ? JSON.stringify(obj, null, 4) : JSON.stringify(obj);
                 validateJson();
+                if (document.getElementById('json-tree-container').style.display === 'block') {
+                    renderJsonTree();
+                }
             } catch (e) {
                 alert('Invalid JSON');
             }
         }
 
+        function toggleJsonView() {
+            const container = document.getElementById('json-tree-container');
+            const btn = document.getElementById('json-view-toggle');
+            if (container.style.display === 'none') {
+                container.style.display = 'block';
+                btn.textContent = 'Show Text View';
+                renderJsonTree();
+            } else {
+                container.style.display = 'none';
+                btn.textContent = 'Show Tree View';
+            }
+        }
+
+        function renderJsonTree() {
+            const input = document.getElementById('json-input').value;
+            const container = document.getElementById('json-tree');
+            try {
+                const data = JSON.parse(input);
+                container.innerHTML = createTreeHtml(data);
+            } catch (e) {
+                container.innerHTML = '<span style="color: #ef4444;">Invalid JSON for Tree View</span>';
+            }
+        }
+
+        function createTreeHtml(data, label = '') {
+            if (typeof data === 'object' && data !== null) {
+                const isArray = Array.isArray(data);
+                let html = `<div class="json-item">`;
+                if (label) html += `<span class="json-key">${label}:</span> `;
+                html += `<span>${isArray ? '[' : '{'}</span>`;
+                html += `<div class="json-nested">`;
+                for (const key in data) {
+                    html += createTreeHtml(data[key], isArray ? '' : key);
+                }
+                html += `</div>`;
+                html += `<span>${isArray ? ']' : '}'}</span>`;
+                html += `</div>`;
+                return html;
+            } else {
+                let valHtml = '';
+                if (typeof data === 'string') valHtml = `<span class="json-string">"${data}"</span>`;
+                else if (typeof data === 'number') valHtml = `<span class="json-number">${data}</span>`;
+                else if (typeof data === 'boolean') valHtml = `<span class="json-boolean">${data}</span>`;
+                else if (data === null) valHtml = `<span class="json-null">null</span>`;
+                
+                return `<div class="json-item">${label ? `<span class="json-key">${label}:</span> ` : ''}${valHtml}</div>`;
+            }
+        }
+
         /* Advanced Stats Logic */
+
         function updateAdvancedStats() {
             const text = document.getElementById('stats-input').value;
             document.getElementById('stat-chars').textContent = text.length;
@@ -1432,9 +1744,36 @@
                 password += availableChars.charAt(Math.floor(Math.random() * availableChars.length));
             }
             document.getElementById('pass-output').value = password;
+            updatePasswordStrength(password);
+        }
+
+        function updatePasswordStrength(pass) {
+            const bar = document.getElementById('strength-bar');
+            const text = document.getElementById('strength-text');
+            let score = 0;
+            if (pass.length > 12) score++;
+            if (/[A-Z]/.test(pass)) score++;
+            if (/[a-z]/.test(pass)) score++;
+            if (/[0-9]/.test(pass)) score++;
+            if (/[^A-Za-z0-9]/.test(pass)) score++;
+
+            const strengths = [
+                { width: '20%', color: '#ef4444', label: 'Very Weak' },
+                { width: '40%', color: '#f59e0b', label: 'Weak' },
+                { width: '60%', color: '#eab308', label: 'Fair' },
+                { width: '80%', color: '#84cc16', label: 'Good' },
+                { width: '100%', color: '#10b981', label: 'Strong' }
+            ];
+
+            const result = strengths[Math.min(score - 1, 4)] || strengths[0];
+            bar.style.width = result.width;
+            bar.style.backgroundColor = result.color;
+            text.textContent = `Strength: ${result.label}`;
+            text.style.color = result.color;
         }
 
         function transformText(type) {
+
             const input = document.getElementById('text-input');
             let val = input.value;
             
@@ -1481,8 +1820,10 @@
             if (tool.init) tool.init();
             addToHistory(toolId);
             recordToolUsage(toolId);
+            window.location.hash = toolId;
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
+
 
         function closeTool() {
             document.getElementById('tool-viewport').style.display = 'none';
@@ -1490,12 +1831,39 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
+        // Deep Linking (Hash Navigation)
+        function handleHashChange() {
+            const hash = window.location.hash.slice(1);
+            if (hash && tools[hash]) {
+                openTool(hash);
+            } else if (!hash) {
+                closeTool();
+            }
+        }
+
+        window.addEventListener('hashchange', handleHashChange);
+
+        // Feedback Modal
+        function openFeedback() {
+            document.getElementById('feedback-modal').style.display = 'flex';
+            body.style.overflow = 'hidden';
+        }
+
+        function closeFeedback(event) {
+            if (!event || event.target.classList.contains('modal-overlay')) {
+                document.getElementById('feedback-modal').style.display = 'none';
+                body.style.overflow = 'auto';
+            }
+        }
+
         window.onload = () => {
             applyFavorites();
             renderHistory();
             initDailyTool();
             updateUsageStats();
+            handleHashChange(); // Check initial hash
         };
+
     </script>
 </body>
 </html>

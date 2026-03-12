@@ -1,0 +1,16 @@
+# Jekyll configuration for GitHub Pages
+title: ToolBox
+description: 究極のオンライン便利ツール集
+url: "https://taksan-cyber.github.io"
+baseurl: "/my-portfolio"
+
+# Performance optimization: exclude unnecessary files from Jekyll build
+exclude:
+  - README.md
+  - .gitignore
+  - .git/
+
+# Allow custom headers (Note: GH Pages has limited support, but good to have)
+kramdown:
+  input: GFM
+  hard_wrap: false
