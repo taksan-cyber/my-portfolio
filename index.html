@@ -8,19 +8,19 @@
     <title>ToolBox | 究極のオンライン便利ツール集</title>
     <meta name="description" content="テキスト変換、パスワード生成、計算機、タイマー、QRコード、単位換算、JSON整形など、日常生活や開発に役立つ13種以上のツールを一つにまとめた、高速で美しいWebアプリケーションです。">
     <meta name="keywords" content="オンラインツール, 便利ツール, テキスト変換, パスワード生成, 計算機, タイマー, QRコード, 単位換算, JSON整形, Base64, MDプレビュー, 無料ツール">
-    <link rel="canonical" href="https://your-toolbox-url.com/">
+    <link rel="canonical" href="https://taksan-cyber.github.io/my-portfolio/">
     <meta name="robots" content="index, follow">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://your-toolbox-url.com/">
+    <meta property="og:url" content="https://taksan-cyber.github.io/my-portfolio/">
     <meta property="og:title" content="ToolBox | 究極のオンライン便利ツール集">
     <meta property="og:description" content="13種以上の便利なツールを一つに。高速、安全、そして美しい。すべての処理はブラウザ上で行われるため、プライバシーも万全です。">
-    <meta property="og:image" content="https://your-toolbox-url.com/og-image.png">
+    <meta property="og:image" content="https://taksan-cyber.github.io/my-portfolio/og-image.png">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://your-toolbox-url.com/">
+    <meta property="twitter:url" content="https://taksan-cyber.github.io/my-portfolio/">
     <meta property="twitter:title" content="ToolBox | 究極のオンライン便利ツール集">
     <meta property="twitter:description" content="13種以上の便利なツールを一つに。高速、安全、 그리고 美しい。すべての処理はブラウザ上で行われるため、プライバシーも万全です。">
     <meta property="twitter:image" content="https://your-toolbox-url.com/og-image.png">
@@ -110,6 +110,7 @@
             font-weight: 700;
             background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
@@ -1358,7 +1359,7 @@
             viewport.style.display = 'block';
             viewport.innerHTML = `
                 <div class="back-btn" onclick="closeTool()">← Back to Dashboard</div>
-                <h2 style="font-size: 2rem; margin-bottom: 2rem; background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">${tool.title}</h2>
+                <h2 style="font-size: 2rem; margin-bottom: 2rem; background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">${tool.title}</h2>
                 <div id="tool-content">${tool.render()}</div>
             `;
             

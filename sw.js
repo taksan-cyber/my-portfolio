@@ -1,6 +1,6 @@
 const CACHE_NAME = 'toolbox-v1';
 const ASSETS = [
-    './tool-site.html',
+    './index.html',
     'https://cdnjs.cloudflare.com/ajax/libs/marked/4.3.0/marked.min.js',
     'https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js'
 ];
